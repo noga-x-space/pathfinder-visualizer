@@ -1,0 +1,30 @@
+.pathfinder {
+  & > div {
+    display: flex;
+
+    & > div {
+      border: none; /* Remove solid borders */
+      width: 20px;
+      height: 20px;
+      background-color: lightgray;
+
+      &::before,
+      &::after {
+        content: "";
+        display: block;
+        width: 1px;
+        height: 100%;
+        background-color: black;
+        position: absolute;
+      }
+
+      &::before {
+        left: 0;
+      }
+
+      &::after {
+        right: 0;
+      }
+    }
+  }
+}
