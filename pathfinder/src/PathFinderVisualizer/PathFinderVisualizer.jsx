@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Node from "./Node/Node";
 
-function PathFinderVisualizer(starterOn) {
+function PathFinderVisualizer({ starterOn }) {
   //needs to get the start button status as props?
   const [nodes, setNodes] = useState([]);
   const [amount, setAmount] = useState(0); // just a node counter
@@ -132,7 +132,8 @@ function PathFinderVisualizer(starterOn) {
 
   return (
     <div className="pathfinder">
-      {amount}
+      {/* {amount} */}
+     
       {nodes.map((row, rowIndex) => (
         <div key={rowIndex} style={{ display: "flex" }}>
           {row.map((node, nodeID) => (

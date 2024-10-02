@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-function Header({ projName, starterOn, setStarterOn }) {
+function Header({ projName, starterOn, setStarterOn, isWall, setIsWall }) {
   const styles = {
     width: "100vw",
 
@@ -22,7 +22,7 @@ function Header({ projName, starterOn, setStarterOn }) {
           onClick={() => {
             console.log("starterOn? ", starterOn);
             setStarterOn(true);
-            
+
             console.log("and now? ", starterOn);
           }}
           style={{ backgroundColor: starterOn ? "white" : "lightgray" }}
@@ -39,6 +39,22 @@ function Header({ projName, starterOn, setStarterOn }) {
         >
           SELECT GOAL NODE
         </button>
+        <button
+          className="buttons"
+          onClick={() => {
+            setIsWall(!isWall);
+          }}
+          style={{ backgroundColor: isWall ? "white" : "lightgray" }}
+        >
+          SELECT GOAL NODE
+        </button>
+        {starterOn ? (
+          <h3 style={{ backgroundColor: "green" }}>
+            choosing a starting node...
+          </h3>
+        ) : (
+          <h3>choosing a goal node...</h3>
+        )}
       </div>
     </div>
   );
