@@ -1,7 +1,7 @@
 import React from "react";
 
 const Node = ({ nodeData, onClick }) => {
-  const { row, col, isStart, isGoal } = nodeData; // Destructure data from props
+  const { row, col, isStart, isGoal, isWall } = nodeData; // Destructure data from props
 
   const nodeStyle = {
     borderColor: "black",
@@ -11,7 +11,13 @@ const Node = ({ nodeData, onClick }) => {
     height: "40px", // Add height for a square grid
     margin: "0px",
     // backgroundColor: "grey",
-    backgroundColor: isStart ? "green" : isGoal ? "red" : "grey", // Set color conditionally
+    backgroundColor: isStart
+      ? "green"
+      : isGoal
+      ? "red"
+      : isWall
+      ? "black"
+      : "grey", // Set color conditionally
     // if isStart or isGoal then bg color blue
   };
   return <div style={nodeStyle} onClick={onClick} />; // Render the node with styling

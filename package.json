@@ -1,0 +1,11 @@
+{
+  "name": "pathfinder-algorithm",
+  "version": "1.0.0",
+  "description": "this is a personal project I do for fun to visualize a pathfinder algorithem",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

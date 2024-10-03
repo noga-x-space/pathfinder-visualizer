@@ -3,21 +3,24 @@ import PathFinderVisualizer from "./PathFinderVisualizer/PathFinderVisualizer";
 import { useState } from "react";
 
 function App() {
-  const [starterOn, setStarterOn] = useState(false); // is the "setStart" button on?
-  const [isWall, setIsWall] = useState(false);
+  const [starterOn, setStarterOn] = useState(true); // is the "setStart" button on?
+  const [wallOn, setWallOn] = useState(false);
+  const [goalOn, setGoalOn] = useState(false);
   return (
     <>
       <Header
         projName={"Path Finder Visualizer"}
         starterOn={starterOn}
         setStarterOn={setStarterOn}
-        isWall={isWall}
-        setIsWall={setIsWall}
+        wallOn={wallOn}
+        setWallOn={setWallOn}
+        goalOn={goalOn}
+        setGoalOn={setGoalOn}
       />
       <PathFinderVisualizer
         starterOn={starterOn}
-        isWall={isWall}
-        setIsWall={setIsWall}
+        wallOn={wallOn}
+        goalOn={goalOn}
       ></PathFinderVisualizer>
       hello
     </>
