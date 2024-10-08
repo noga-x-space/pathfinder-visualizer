@@ -1,0 +1,16 @@
+name: hello world on merge
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs_on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+
+      - name: run hello world
+        run: echo "hello world, Noga's build successfull"
