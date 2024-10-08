@@ -1,0 +1,19 @@
+ implement the wall nodes to work in:
+1-whatever node is in the wall history should be marked as isWall (node properties)
+2-any node in the wallHistory (they should all be marked) should be painted black
+3-while the mouse is still hovering, the nodes selected in the wallOn mode should be yellow, turning to black once 
+
+
+name: testing cicd
+
+on:
+  push:
+    branch["main"]
+
+jobs:
+  build:
+    runs-on: ubuntu latest
+    
+    steps:
+    - name: checkout the repo
+    - uses: actions/checkout@v4
