@@ -1,14 +1,33 @@
 import { useEffect, useState } from "react";
 import Node from "./Node/Node";
+import StarAlgorithem from "./StarAlgorithem";
 
-function PathFinderVisualizer({ starterOn, wallOn, goalOn }) {
-  const [nodes, setNodes] = useState([]);
+function PathFinderVisualizer({
+  starterOn,
+  wallOn,
+  goalOn,
+  nodes,
+  setNodes,
+  setStartNode,
+  startNode,
+  wallHistory,
+  setWallHistory,
+  // startCol,
+  // setStartCol,
+  // startRow,
+  // setStartRow,
+  index,
+  setIndex,
+}) {
   const [amount, setAmount] = useState(0); // just a node counter
   //vars to store the locations of the current start and goal nodes:
   const [startCol, setStartCol] = useState(null);
   const [startRow, setStartRow] = useState(null);
   const [goalCol, setGoalCol] = useState(null);
   const [goalRow, setGoalRow] = useState(null);
+
+  // const gridrows = 15;
+  // const gridcols = 45;
   // const [bricks, setBricks] = useState([]);
 
   // i need to think about the functionality of how i see bricks
@@ -38,6 +57,7 @@ function PathFinderVisualizer({ starterOn, wallOn, goalOn }) {
           isStart: false,
           isGoal: false,
           isWall: false,
+          isMarked: false,
         };
         nodesInRow.push(node);
         tempamount++;
@@ -72,6 +92,7 @@ function PathFinderVisualizer({ starterOn, wallOn, goalOn }) {
         newRow[col].isGoal = false;
         setStartCol(col);
         setStartRow(row);
+        setStartNode([row, col]);
       }
     } else {
       // User chooses a goal node
@@ -105,6 +126,8 @@ function PathFinderVisualizer({ starterOn, wallOn, goalOn }) {
     return node.isGoal || node.isWall || node.isStart;
   };
 
+  // const handleNodeClick2 =
+
   //here we have 3 options: user chose a start, a goal, or to draw on a wall
   const handleNodeClick2 = (row, col) => {
     // Clone the nodes array and the row that contains the clicked node
@@ -116,19 +139,22 @@ function PathFinderVisualizer({ starterOn, wallOn, goalOn }) {
     // Modify the clicked node
     if (starterOn) {
       // clearing current starting point
-      newNodes[startRow][startCol].isStart = false;
+
+      if (startCol) newNodes[startRow][startCol].isStart = false;
 
       //is the user choosing a blank node
       if (!(node.isGoal || node.isWall || node.isStart)) {
         newRow[col] = { ...newRow[col], isStart: true };
         setStartCol(col);
         setStartRow(row);
+        console.log("start node info: ", startRow, startCol);
+        setStartNode([row, col]);
+        // setStartNode({row, col});
+        // startNode && console.log("startNode: ", startNode[0], startNode[1]);
       }
-
-      
     } else if (goalOn) {
       //clearing prev goal
-      newNodes[goalRow][goalCol].isGoal = false;
+      if (goalCol) newNodes[goalRow][goalCol].isGoal = false;
 
       if (!(node.isGoal || node.isWall || node.isStart)) {
         //the user chooses a goal node
@@ -162,22 +188,36 @@ function PathFinderVisualizer({ starterOn, wallOn, goalOn }) {
   /////// handling wall creation
   const [isDragging, setIsDragging] = useState(false);
   const [curBricks, setCurBricks] = useState([]); // the latest addition of bricks to the wall
-  const [wallHistory, setWallHistory] = useState([]); //an array of all of the walls added to the grid
-  const [index, setIndex] = useState(0); //the index of the wallHistory array, for undo and redo purposes
+  // const [wallHistory, setWallHistory] = useState([]); //an array of all of the walls added to the grid
+  // const [index, setIndex] = useState(0); //the index of the wallHistory array, for undo and redo purposes
   // Start dragging
+
   const handleMouseDown = (row, col) => {
-    setIsDragging(true);
-    // addWallNode(row, col); // First node in the drag event
+    if (wallOn) {
+      setIsDragging(true);
+      console.log(
+        "mousedown- wall history: ",
+        wallHistory.length,
+        "wall history: ",
+        wallHistory
+      );
+      addBrick(row, col);
+      console.log("added brick: ", curBricks);
+    }
   };
 
   const handleMouseOver = (row, col) => {
+    console.log("mouse over adding brick");
+    console.log(" is wall on? ", wallOn, "is wall dragging? ", isDragging);
     if (wallOn && isDragging) {
       //this should only take action whenever the wall creation button is chosen
       addBrick(row, col);
+      console.log("mouse over added brick: ", curBricks.values);
+      commitWallAdd();
     }
   };
   const handleMouseUp = () => {
-    setIsDragging(false);
+    // setIsDragging(false);
     curBricks.length > 0 && commitWallAdd(curBricks);
   };
 
@@ -185,40 +225,135 @@ function PathFinderVisualizer({ starterOn, wallOn, goalOn }) {
   const addBrick = (row, col) => {
     //handling same place repitition- if we don't already have this node
     if (
+      curBricks.length == 0 || //this check is ESSENTIAL since otherwise "some" wouldn't work
       !curBricks.some(([r, c]) => {
         r == row && c == col;
       })
     ) {
       const newNodes = [...nodes];
-      const newRow = newNodes[row];
+      const newRow = [...newNodes[row]];
       newRow[col].isWall = true;
       newNodes[row] = newRow;
       setNodes(newNodes);
-      setCurBricks(...curBricks, [row, col]);
+      setCurBricks((prevState) => [...prevState, [row, col]]);
     }
+    console.log("added brick is", [...curBricks]);
   };
-  const commitWallAdd = () => {
-    //we assume curBricks isn't empty
 
-    if (index < wallHistory.length) {
-      //if the user adds a new wall after undoing previous steps
-      const updatedHistory = [...wallHistory];
-      updatedHistory.splice(index, wallHistory - index, curBricks); //remove elements after index, add curBricks
-      setWallHistory(updatedHistory);
-    }
+  const commitWallAdd = () => {
+    setWallHistory((prevState) => {
+      const updatedHistory = [...prevState];
+      //if the user adds a new wall after undoing previous steps - remove them and add new ones
+      if (index < wallHistory.length) {
+        updatedHistory.splice(index, wallHistory - index, curBricks); //remove elements after index, add curBricks
+      } else {
+        updatedHistory.splice(index, 0, curBricks);
+      }
+      return updatedHistory;
+    });
+
     setCurBricks([]);
-    setIndex(index++);
-    console.log("newest wall is: ", wallHistory[wallHistory.length - 1]);
+    setIndex(index + 1);
+    console.log(
+      "commitWallAdd - newest wall is: ",
+      wallHistory[wallHistory.length - 1],
+      "the wall's length is: ",
+      wallHistory.length,
+      "the index is currently at",
+      index
+    );
   };
+
+  //function adds the current bricks to the wall history
+  //we assume curBricks isn't empty
+  const commitWallAdd2 = () => {
+    setWallHistory((prevState) => [...prevState]);
+
+    const updatedHistory = [...wallHistory];
+
+    //if the user adds a new wall after undoing previous steps - remove them and add new ones, otherwise just add new ones
+    if (index < wallHistory.length) {
+      updatedHistory.splice(index, wallHistory - index, curBricks); //remove elements after index, add curBricks
+    } else {
+      updatedHistory.splice(index, 0, curBricks);
+    }
+
+    setWallHistory(updatedHistory);
+    console.log("commitWallAdd was called - wallHistory: ", wallHistory);
+    setCurBricks([]);
+    setIndex(index + 1);
+    console.log(
+      "commitWallAdd - newest wall is: ",
+      wallHistory[wallHistory.length - 1],
+      "the wall's length is: ",
+      wallHistory.length,
+      "the index is currently at",
+      index
+    );
+  };
+
+  //whenever the undo button is pressed
+  const removeLastWallRender = () => {
+    if (index > 0 && wallHistory[index]) {
+      const lastWall = wallHistory[index - 1];
+
+      // Create a new array with updates based on the last wall
+      const updatedNodes = nodes.map((nodeRow, rowIndex) => {
+        // Iterate over each row of the 2D nodes array
+        return nodeRow.map((node, colIndex) => {
+          // Check if this node is part of the last wall
+          const isLastWallNode = lastWall.some(
+            (lastWallNode) =>
+              lastWallNode[0] === rowIndex && lastWallNode[1] === colIndex
+          );
+
+          // Return a new object with updated isWall if last wall node
+          return { ...node, isWall: isLastWallNode ? false : node.isWall };
+        });
+      });
+
+      // Update the state with the modified nodes array
+      setNodes(updatedNodes);
+    }
+  };
+
+  //whenever the redo is clicked
+  const reviveLastWallRender = () => {
+    const lastWall = wallHistory[wallHistory.length - 1];
+
+    // Create a new array with updates based on the last wall
+    const updatedNodes = nodes.map((nodeRow, rowIndex) => {
+      // Iterate over each row of the 2D nodes array
+      return nodeRow.map((node, colIndex) => {
+        // Check if this node is part of the last wall
+        const isLastWallNode = lastWall.some(
+          (lastWallNode) =>
+            lastWallNode[0] === rowIndex && lastWallNode[1] === colIndex
+        );
+
+        // Return a new object with updated isWall if last wall node
+        return { ...node, isWall: isLastWallNode ? false : node.isWall };
+      });
+    });
+
+    // Update the state with the modified nodes array
+    setNodes(updatedNodes);
+  };
+
+  // useEffect(() => {
+  //   if (index < wallHistory.length) removeLastWallRender();
+  // }, [index]);
+  
+
   const undo = () => {
     // move 1 back in wallHistory
     if (index > 0) {
-      setIndex(index--);
+      setIndex(index - 1);
     }
   };
   const redo = () => {
     // move 1 forward in wallHistory
-    if (index < wallHistory.length) setIndex(index++);
+    if (index < wallHistory.length) setIndex(index + 1);
   };
 
   return (
@@ -232,13 +367,16 @@ function PathFinderVisualizer({ starterOn, wallOn, goalOn }) {
               nodeData={node}
               onClick={() => handleNodeClick2(node.row, node.col)}
               //can I prevent these events here if it isn't wallOn?
-              onMouseDown={handleMouseDown}
-              onMouseUp={handleMouseUp}
-              onMouseOver={handleMouseOver}
+              onMouseDown={() => handleMouseDown(node.row, node.col)}
+              // onMouseUp={handleMouseUp}
+              // onMouseOver={() => handleMouseOver(node.row, node.col)}
             />
           ))}
         </div>
       ))}
+      <button id="testing-wall-add-functionality" onClick={commitWallAdd}>
+        add this!
+      </button>
       foo
     </div>
   );

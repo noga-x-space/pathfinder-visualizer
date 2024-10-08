@@ -1,7 +1,7 @@
 import React from "react";
 
-const Node = ({ nodeData, onClick }) => {
-  const { row, col, isStart, isGoal, isWall } = nodeData; // Destructure data from props
+const Node = ({ nodeData, onClick, onMouseDown, onMouseOver, onMouseUp }) => {
+  const { row, col, isStart, isGoal, isWall, isMarked } = nodeData; // Destructure data from props
 
   const nodeStyle = {
     borderColor: "black",
@@ -17,10 +17,21 @@ const Node = ({ nodeData, onClick }) => {
       ? "red"
       : isWall
       ? "black"
-      : "grey", // Set color conditionally
+      : isMarked
+      ? "pink"
+      : "white",
+    // : "grey", // Set color conditionally
     // if isStart or isGoal then bg color blue
   };
-  return <div style={nodeStyle} onClick={onClick} />; // Render the node with styling
+  return (
+    <div
+      style={nodeStyle}
+      onClick={onClick}
+      onMouseDown={onMouseDown}
+      onMouseOver={onMouseOver}
+      onMouseUp={onMouseUp}
+    />
+  ); // Render the node with styling
 };
 
 export default Node;

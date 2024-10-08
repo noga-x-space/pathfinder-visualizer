@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import undoImage from "../assets/undo.png";
+import redoImage from "../assets/redo.png";
 
 function Header({
   projName,
@@ -8,12 +10,83 @@ function Header({
   setWallOn,
   goalOn,
   setGoalOn,
+  runAlgorithm,
+  wallHistory,
+  index,
+  setIndex,
+  nodes,
+  setNodes,
 }) {
   const [selectedValue, setSelectedValue] = useState("star");
 
   const handleAlgorithemChange = (event) => {
     setSelectedValue(event.target.value);
   };
+
+  const handleRedo = () => {
+    if (index < wallHistory.length) {
+      redoLastWallRender();
+      setIndex(index + 1);
+    }
+  };
+  const handleUndo = () => {
+    if (index > 0) {
+      console.log("undo should theoretically work now");
+      removeLastWallRender();
+      setIndex(index - 1);
+    } else console.log("index too low, won't undo");
+  };
+
+  //whenever the undo button is pressed
+  const removeLastWallRender = () => {
+    console.log("undo activated");
+    const lastWall = wallHistory[index - 1];
+
+    // Create a new array with updates based on the last wall
+    const updatedNodes = nodes.map((nodeRow, rowIndex) => {
+      // Iterate over each row of the 2D nodes array
+      return nodeRow.map((node, colIndex) => {
+        // Check if this node is part of the last wall
+        const isLastWallNode = lastWall.some(
+          (lastWallNode) =>
+            lastWallNode[0] === rowIndex && lastWallNode[1] === colIndex
+        );
+
+        // Return a new object with updated isWall if last wall node
+        return { ...node, isWall: isLastWallNode ? false : node.isWall };
+      });
+    });
+
+    // Update the state with the modified nodes array
+    setNodes(updatedNodes);
+  };
+
+  //whenever the redo is clicked
+  const redoLastWallRender = () => {
+    console.log("redoing....");
+    const nextWall = wallHistory[index];
+
+    if (!nextWall || nextWall.length == 0) return;
+
+    // Create a new array with updates based on the last wall
+    const updatedNodes = nodes.map((nodeRow, rowIndex) => {
+      // Iterate over each row of the 2D nodes array
+      return nodeRow.map((node, colIndex) => {
+        // Check if this node is part of the last wall
+        const isNextWallNode = nextWall.some(
+          (nextWallNode) =>
+            nextWallNode[0] === rowIndex && nextWallNode[1] === colIndex
+        );
+
+        // Return a new object with updated isWall if last wall node
+        return { ...node, isWall: isNextWallNode ? true : node.isWall };
+      });
+    });
+
+    // Update the state with the modified nodes array
+    setNodes(updatedNodes);
+  };
+
   const styles = {
     // width: "100vw",
 
@@ -46,6 +119,11 @@ function Header({
   // }
   // }, [starterOn, goalOn, wallOn]);
 
+  // useEffect hook to re-render on index change
+  useEffect(() => {
+    // No need to do anything here, the component will re-render when index changes
+  }, [index]);
+
   return (
     <div style={styles}>
       <h1>{projName}</h1>
@@ -62,9 +140,16 @@ function Header({
           <option value={"op2"}>second algorithem</option>
           <option value={"op3"}>3rd algorithem</option>
         </select>
+        <button
+          id="runBTN"
+          onClick={runAlgorithm}
+          style={{ backgroundColor: "turquoise" }}
+        >
+          Run Algorithm
+        </button>
         <div className="buttons">
           <button
-          id="startBTN"
+            id="startBTN"
             onClick={() => {
               setStarterOn(true);
               setWallOn(false);
@@ -75,7 +160,7 @@ function Header({
             SELECT START NODE
           </button>
           <button
-          id="goalBTN"
+            id="goalBTN"
             onClick={() => {
               setGoalOn(true);
               setStarterOn(false);
@@ -86,7 +171,7 @@ function Header({
             SELECT GOAL NODE
           </button>
           <button
-          id="wallBTN"
+            id="wallBTN"
             onClick={() => {
               setWallOn(true);
               setStarterOn(false);
@@ -98,6 +183,13 @@ function Header({
           </button>
         </div>
 
+        <button id="undo" onClick={handleUndo}>
+          <img src={undoImage} style={{ width: "20px", height: "20px" }}></img>
+        </button>
+        <button id="redo" onClick={handleRedo}>
+          <img src={redoImage} style={{ width: "20px", height: "20px" }}></img>
+        </button>
+        <h2>index is {index}</h2>
         {/* {starterOn ? (
           <h3 style={{ backgroundColor: "green" }}>
             choosing a starting node...
