@@ -213,12 +213,12 @@ function PathFinderVisualizer({
       //this should only take action whenever the wall creation button is chosen
       addBrick(row, col);
       console.log("mouse over added brick: ", curBricks.values);
-      commitWallAdd();
     }
   };
   const handleMouseUp = () => {
-    // setIsDragging(false);
+    setIsDragging(false);
     curBricks.length > 0 && commitWallAdd(curBricks);
+    console.log("mouse up, dragging: ", isDragging)
   };
 
   //adding node to current wall
@@ -368,8 +368,8 @@ function PathFinderVisualizer({
               onClick={() => handleNodeClick2(node.row, node.col)}
               //can I prevent these events here if it isn't wallOn?
               onMouseDown={() => handleMouseDown(node.row, node.col)}
-              // onMouseUp={handleMouseUp}
-              // onMouseOver={() => handleMouseOver(node.row, node.col)}
+              onMouseUp={handleMouseUp}
+              onMouseOver={() => handleMouseOver(node.row, node.col)}
             />
           ))}
         </div>
