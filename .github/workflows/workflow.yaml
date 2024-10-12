@@ -10,10 +10,11 @@ on:
 
 jobs:
   build:
-    runs_on: ubuntu-latest
+    runs-on: ubuntu-latest  # Fixed typo (was "runs_on")
+
     steps:
-      - name: checkout
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: run hello world
-        run: echo "hello world, Noga's build successfull"
+      - name: Run Hello World
+        run: echo "hello world, Noga's build successful"
