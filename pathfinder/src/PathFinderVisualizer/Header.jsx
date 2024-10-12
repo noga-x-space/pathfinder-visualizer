@@ -142,11 +142,15 @@ function Header({
         </select>
         <button
           id="runBTN"
-          onClick={runAlgorithm}
+          onClick={() => {
+            runAlgorithm();
+            console.log("node at 1,1 ismarked? ", nodes[1][1]);
+          }}
           style={{ backgroundColor: "turquoise" }}
         >
           Run Algorithm
         </button>
+
         <div className="buttons">
           <button
             id="startBTN"

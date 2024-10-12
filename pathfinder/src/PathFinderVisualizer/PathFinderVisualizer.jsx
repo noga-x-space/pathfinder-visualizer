@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Node from "./Node/Node";
-import StarAlgorithem from "./StarAlgorithem";
+// import StarAlgorithem from "./StarAlgorithem";
 
 function PathFinderVisualizer({
   starterOn,
@@ -9,7 +9,7 @@ function PathFinderVisualizer({
   nodes,
   setNodes,
   setStartNode,
-  startNode,
+  setGoalNode,
   wallHistory,
   setWallHistory,
   // startCol,
@@ -26,8 +26,10 @@ function PathFinderVisualizer({
   const [goalCol, setGoalCol] = useState(null);
   const [goalRow, setGoalRow] = useState(null);
 
-  // const gridrows = 15;
-  // const gridcols = 45;
+  // const gridrows = 10;
+  // const gridcols = 5;
+  const gridrows = 15;
+  const gridcols = 45;
   // const [bricks, setBricks] = useState([]);
 
   // i need to think about the functionality of how i see bricks
@@ -48,9 +50,9 @@ function PathFinderVisualizer({
   const createNodes = () => {
     const tempnodes = [];
     let tempamount = 0;
-    for (let row = 0; row < 15; row++) {
+    for (let row = 0; row < gridrows; row++) {
       const nodesInRow = [];
-      for (let col = 0; col < 45; col++) {
+      for (let col = 0; col < gridcols; col++) {
         const node = {
           row: row,
           col: col,
@@ -106,6 +108,7 @@ function PathFinderVisualizer({
         newRow[col].isGoal = true;
         setGoalCol(col);
         setGoalRow(row);
+        setGoalNode([row, col]);
       }
     }
 
@@ -149,8 +152,6 @@ function PathFinderVisualizer({
         setStartRow(row);
         console.log("start node info: ", startRow, startCol);
         setStartNode([row, col]);
-        // setStartNode({row, col});
-        // startNode && console.log("startNode: ", startNode[0], startNode[1]);
       }
     } else if (goalOn) {
       //clearing prev goal
@@ -162,6 +163,7 @@ function PathFinderVisualizer({
           newRow[col] = { ...newRow[col], isGoal: true };
           setGoalCol(col);
           setGoalRow(row);
+          setGoalNode([row, col]);
         }
       }
     }
@@ -202,23 +204,19 @@ function PathFinderVisualizer({
         wallHistory
       );
       addBrick(row, col);
-      console.log("added brick: ", curBricks);
     }
   };
 
   const handleMouseOver = (row, col) => {
-    console.log("mouse over adding brick");
-    console.log(" is wall on? ", wallOn, "is wall dragging? ", isDragging);
     if (wallOn && isDragging) {
       //this should only take action whenever the wall creation button is chosen
       addBrick(row, col);
-      console.log("mouse over added brick: ", curBricks.values);
     }
   };
   const handleMouseUp = () => {
     setIsDragging(false);
     curBricks.length > 0 && commitWallAdd(curBricks);
-    console.log("mouse up, dragging: ", isDragging)
+    console.log("mouse up, dragging: ", isDragging);
   };
 
   //adding node to current wall
@@ -233,11 +231,11 @@ function PathFinderVisualizer({
       const newNodes = [...nodes];
       const newRow = [...newNodes[row]];
       newRow[col].isWall = true;
+      newRow[col].style = { backgroundColor: "yellow" };
       newNodes[row] = newRow;
       setNodes(newNodes);
       setCurBricks((prevState) => [...prevState, [row, col]]);
     }
-    console.log("added brick is", [...curBricks]);
   };
 
   const commitWallAdd = () => {
@@ -343,7 +341,6 @@ function PathFinderVisualizer({
   // useEffect(() => {
   //   if (index < wallHistory.length) removeLastWallRender();
   // }, [index]);
-  
 
   const undo = () => {
     // move 1 back in wallHistory
@@ -370,13 +367,11 @@ function PathFinderVisualizer({
               onMouseDown={() => handleMouseDown(node.row, node.col)}
               onMouseUp={handleMouseUp}
               onMouseOver={() => handleMouseOver(node.row, node.col)}
+              className={`node ${node.isMarked ? "isMarked" : ""}`}
             />
           ))}
         </div>
       ))}
-      <button id="testing-wall-add-functionality" onClick={commitWallAdd}>
-        add this!
-      </button>
       foo
     </div>
   );

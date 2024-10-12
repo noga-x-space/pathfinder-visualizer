@@ -1,0 +1,6 @@
+.isMarked {
+  background-color: pink !important;
+}
+.node.isMarked {
+  background-color: pink !important;
+}
