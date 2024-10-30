@@ -3,7 +3,7 @@ this is a personal project I do for fun to visualize a pathfinder algorithem
 PathFinder Visualizer
 Note: This project is a work in progress. Currently, it implements a backtracking algorithm for pathfinding, with plans to integrate additional algorithms, including A*, Dijkstra, and BFS. Stay tuned for updates as new algorithms are added!
 
-Table of Contents
+## Table of Contents
 Overview
 Features
 Getting Started
@@ -11,21 +11,21 @@ Usage
 Project Structure
 Pathfinding Algorithms
 Future Improvements
-License
 
+## Demo
 ![Screen Recording](/demo.mp4)
 
-Overview
+## Overview
 This PathFinder Visualizer demonstrates a backtracking algorithm that finds a path between two nodes on a grid. As development progresses, additional algorithms will be implemented, and the user experience will improve with more features and functionality.
 
-#Features
+## Features
 Set Start and Goal Nodes: Users can select a start and a goal node on the grid.
 Draw Walls: Add obstacles on the grid that the algorithm must navigate around.
 Run Backtracking Algorithm: The current implementation uses a backtracking approach to find a path from start to goal.
 Planned Features: Future updates will include more algorithms, interactive controls, and enhanced UI elements.
 
 
-#Getting Started
+## Getting Started
 Prerequisites
 Node.js and npm installed on your machine.
 Installation
@@ -47,7 +47,7 @@ Copy code
 npm start
 The app will run locally on http://localhost:3000.
 
-#Usage
+## Usage
 Select Start Node: Click on the "Set Start Node" button, then click a node on the grid.
 Select Goal Node: Click on the "Set Goal Node" button, then click a node on the grid.
 Draw Walls: Use the "Draw Wall" button to place obstacles.
@@ -66,15 +66,15 @@ Copy code
 │   ├── index.html                  # HTML template
 │   └── assets/                     # Icons and other static files
 └── README.md                       # Project README
-Pathfinding Algorithms
+## Pathfinding Algorithms
 Backtracking Algorithm
 The Backtracking Algorithm explores nodes on the grid by recursively checking paths from the start node to the goal node. It backtracks when it encounters walls or paths that do not lead to the goal. While not always the most efficient, it serves as a foundational algorithm for this visualizer.
 
-#Planned Algorithms
+## Planned Algorithms
 A Algorithm*: Efficiently finds the shortest path using heuristics.
 Dijkstra’s Algorithm: Finds the shortest path by exploring all possible paths.
 Breadth-First Search: Suitable for unweighted grids.
-#Future Improvements
+## Future Improvements
 Additional Algorithms: Adding A*, Dijkstra, and BFS.
 Improved User Interface: Enhanced grid customization and algorithm controls.
 **Path Weighting: Support for weighted paths to represent different terrain costs.
