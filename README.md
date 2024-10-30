@@ -12,6 +12,9 @@ Project Structure
 Pathfinding Algorithms
 Future Improvements
 License
+
+![Screen Recording](/demo.mp4)
+
 Overview
 This PathFinder Visualizer demonstrates a backtracking algorithm that finds a path between two nodes on a grid. As development progresses, additional algorithms will be implemented, and the user experience will improve with more features and functionality.
 
