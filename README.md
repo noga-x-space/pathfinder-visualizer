@@ -15,6 +15,7 @@ Future Improvements
 ## Demo
 a video of the website and an image provided:
 ![Screen Recording](/demo.mp4)
+
 ![image of the screen](/smiley-demo.png)
 
 ## Overview
