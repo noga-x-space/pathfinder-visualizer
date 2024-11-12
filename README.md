@@ -27,9 +27,15 @@ This PathFinder Visualizer demonstrates a backtracking algorithm that finds a pa
 #### a video of the website and an image provided:
 
 
-### [Screen Recording](/demo.mp4)
+
 
 ![image of the screen](/smiley-demo.png)
+
+
+<!--- ### [Screen Recording](/demo.mp4) --->
+
+#### a video demo:
+![Demo Video Preview](demo_vid.gif)
 
 
 ## Features
