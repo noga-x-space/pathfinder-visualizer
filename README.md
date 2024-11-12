@@ -6,10 +6,10 @@ This is a personal project I created for fun to visualize pathfinding algorithms
 
 ## Table of Contents
 - [Overview](#overview)
+- [Demo](#demo)
 - [Features](#features)
 - [Getting Started](#getting-started)
 - [Usage](#usage)
-- [Demo](#demo)
 - [Project Structure](#project-structure)
 - [Pathfinding Algorithms](#pathfinding-algorithms)
 - [Future Improvements](#future-improvements)
@@ -20,6 +20,16 @@ This is a personal project I created for fun to visualize pathfinding algorithms
 
 ## Overview
 This PathFinder Visualizer demonstrates a backtracking algorithm that finds a path between two nodes on a grid. As development progresses, additional algorithms will be implemented, and the user experience will improve with more features and functionality.
+
+
+
+## Demo
+#### a video of the website and an image provided:
+
+
+### [Screen Recording](/demo.mp4)
+
+![image of the screen](/smiley-demo.png)
 
 
 ## Features
@@ -53,16 +63,6 @@ The app will run locally on http://localhost:3000.
 - Select Goal Node: Click on the "Set Goal Node" button, then click a node on the grid.
 - Draw Walls: Use the "Draw Wall" button to place obstacles.
 - Run Backtracking Algorithm: Click "Run Algorithm" to see the pathfinding process in action. The algorithm attempts to reach the goal while avoiding walls.
-
-
-
-## Demo
- a video of the website and an image provided:
-### ![Screen Recording](/demo.mp4)
-
-
-![image of the screen](/smiley-demo.png)
-
 
 
 ## Project Structure
