@@ -72,7 +72,7 @@ The app will run locally on http://localhost:3000.
 
 
 ## Project Structure
-plaintext
+```plaintext
 .
 ├── src
 │   ├── PathFinderVisualizer/
@@ -84,7 +84,7 @@ plaintext
 │   ├── index.html                  # HTML template
 │   └── assets/                     # Icons and other static files
 └── README.md                       # Project README
-
+```
 ## Pathfinding Algorithms
 Backtracking Algorithm
 The Backtracking Algorithm explores nodes on the grid by recursively checking paths from the start node to the goal node. It backtracks when it encounters walls or paths that do not lead to the goal. While not always the most efficient, it serves as a foundational algorithm for this visualizer.
